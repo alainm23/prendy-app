@@ -1,0 +1,14 @@
+ion-item {
+  box-shadow: none;
+  border-radius: 9px;
+  border: 1px solid var(--ion-list-border-color);
+  --background: var(--ion-item-bg-color);
+  --padding-start: 6px;
+  --inner-padding-end: 12px;
+  margin-top: 9px;
+}
+
+.business-icon {
+  border-radius: 9px;
+  padding: 3px;
+}

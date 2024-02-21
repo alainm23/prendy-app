@@ -1,0 +1,9 @@
+.item-input {
+  ion-item {
+    --border-width: 1px;
+    --border-color: var(--ion-list-border-color);
+    margin-top: 6px;
+    --border-radius: 9px;
+    --background: var(--ion-item-bg-color);
+  }
+}

@@ -1,0 +1,57 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title> {{ 'Appearance' | translate }} </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()"> {{ 'OK' | translate }} </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-text class="ion-text-center dim-label"
+          ><p>
+            {{
+              "'Automatic' will match Prendy to the system's Dynamic Type setting."
+                | translate
+            }}
+          </p></ion-text
+        >
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-list>
+          <ion-radio-group [formControl]="appearanceControl">
+            <ion-item>
+              <ion-icon slot="start" name="contrast-outline"></ion-icon>
+              <ion-radio value="system" justify="space-between">{{
+                'Automatic' | translate
+              }}</ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon slot="start" name="contrast-outline"></ion-icon>
+              <ion-radio value="light" justify="space-between">{{
+                'Light' | translate
+              }}</ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon slot="start" name="contrast-outline"></ion-icon>
+              <ion-radio value="dark" justify="space-between">{{
+                'Dark' | translate
+              }}</ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

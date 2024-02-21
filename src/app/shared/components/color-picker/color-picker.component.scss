@@ -1,0 +1,51 @@
+.item-input {
+  ion-label {
+    font-size: 0.85em;
+    opacity: 0.3;
+  }
+}
+
+.wrapper {
+  box-shadow: none;
+  margin: 0;
+  margin-top: 6px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid var(--ion-list-border-color);
+  background: var(--ion-item-bg-color);
+
+  .wrapper-content {
+    width: auto;
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: repeat(6, 42px);
+    grid-template-rows: repeat(2, 42px);
+    grid-auto-flow: row;
+
+    .color-item {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+    }
+
+    .inner-circle {
+      background: #fff;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .inner-circle.visible {
+      opacity: 1;
+    }
+  }
+}

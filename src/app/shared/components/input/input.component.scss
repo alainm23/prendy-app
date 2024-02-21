@@ -1,0 +1,13 @@
+.item-input {
+  ion-label {
+    font-size: 0.85em;
+    opacity: 0.3;
+  }
+  ion-item {
+    --border-width: 1px;
+    --border-color: var(--ion-list-border-color);
+    margin-top: 6px;
+    --border-radius: 9px;
+    --background: var(--ion-item-bg-color);
+  }
+}

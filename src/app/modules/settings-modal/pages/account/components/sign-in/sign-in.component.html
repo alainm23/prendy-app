@@ -1,0 +1,60 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-icon class="icon-size-128" name="cloud"></ion-icon>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-text class="ion-text-center">
+          <p class="no-margin-top">
+            Prendy Cloud store your data and automatically keeps them updated
+            across all your device.
+          </p>
+
+          <p>
+            To get started, you need a Prendy Cloud account. Creating a new
+            account is free and easy. If you already have one, just log in.
+          </p>
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="12">
+        <app-input
+          label="{{ 'EMAIL' | translate }}"
+          placeholder="example@gmail.com"
+          [control]="form.controls['email']"></app-input>
+      </ion-col>
+
+      <ion-col size="12">
+        <app-input
+          label="{{ 'PASSWORD' | translate }}"
+          placeholder="******"
+          type="password"
+          [control]="form.controls['password']"></app-input>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-text color="primary" class="ion-text-right">
+          <p class="ion-no-margin">
+            {{ 'forgot your password?' | translate }}
+          </p>
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="12" class="ion-padding-top">
+        <app-button
+          type="submit"
+          expand="block"
+          [loading]="loading()"
+          label="{{ 'Log in' | translate }}"></app-button>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-button type="submit" expand="block" fill="clear">{{
+          'Create New Account' | translate
+        }}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>

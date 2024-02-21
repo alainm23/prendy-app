@@ -1,0 +1,89 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title> {{ 'Log In' | translate }} </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        {{ 'Cancel' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-horizontal">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-text
+          ><p>
+            You already have to-dos on both this iPhone and on Prendy Cloud.
+            Which to-dos would you like to keeps?
+          </p></ion-text
+        >
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-list>
+          <ion-radio-group [formControl]="control">
+            <ion-item>
+              <ion-icon size="large" slot="start" name="refresh"></ion-icon>
+              <ion-label>
+                <h2 class="ion-text-wrap">Keep all to-dos</h2>
+                <p class="ion-text-wrap">
+                  Recommended. The to-dos on this iPhone and on Prendy Cloud are
+                  merged. Nothing is deleted.
+                </p>
+              </ion-label>
+              <ion-radio mode="md" slot="end" value="keep-all"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon
+                size="large"
+                slot="start"
+                name="cloud-outline"></ion-icon>
+              <ion-label>
+                <h2 class="ion-text-wrap">
+                  Keep only the to-dos from Prendy Cloud
+                </h2>
+                <p class="ion-text-wrap">
+                  The do-dos on this iPhone are deleted and replaced with your
+                  to-dos from Prendy Cloud.
+                </p>
+              </ion-label>
+              <ion-radio mode="md" slot="end" value="keep-cloud"></ion-radio>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-icon size="large" slot="start" name="smartphone"></ion-icon>
+              <ion-label>
+                <h2 class="ion-text-wrap">
+                  Keep only the to-dos from this iPhone
+                </h2>
+                <p class="ion-text-wrap">
+                  Your to-dos on Prendy Cloud are deleted and replaced with the
+                  to-dos from this iPhone.
+                </p>
+              </ion-label>
+              <ion-radio mode="md" slot="end" value="keep-device"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <app-button
+      (click)="select()"
+      type="submit"
+      expand="block"
+      label="{{ 'Continue' | translate }}"></app-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,17 @@
+<ion-header class="ion-no-border" translucent="true">
+  <ion-toolbar>
+    <ion-title>{{ 'Select an icon' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div class="wrapper">
+    @for (item of icons(); track item) {
+      <div
+        class="wrapper-item"
+        [class.selected]="icon === item"
+        (click)="selectIcon(item)">
+        <ion-icon [name]="item"></ion-icon>
+      </div>
+    }
+  </div>
+</ion-content>

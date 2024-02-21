@@ -1,0 +1,23 @@
+ion-header,
+ion-toolbar,
+ion-content {
+  background: var(--ion-content-bg-color);
+  --background: var(--ion-content-bg-color);
+}
+
+.group-list {
+  .group-header {
+    font-size: 0.85em;
+    opacity: 0.3;
+    padding-left: 2rem;
+  }
+  ion-list {
+    border: 1px solid var(--ion-list-border-color) !important;
+    border-radius: 9px !important;
+    margin-top: 6px !important;
+
+    ion-item {
+      --background: var(--ion-item-bg-color);
+    }
+  }
+}

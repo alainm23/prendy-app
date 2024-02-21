@@ -1,0 +1,17 @@
+<div class="item-input">
+  <ion-label class="ion-padding-start">{{ label || 'COLOR' | translate }}</ion-label>
+  <ion-card class="wrapper">
+    <div class="wrapper-content">
+      @for (color of colors(); track color) {
+        <div
+          class="color-item"
+          [style.background]="color"
+          (click)="selectColor(color)">
+          <div
+            [class.visible]="colorSelected === color"
+          class="inner-circle"></div>
+        </div>
+      }
+    </div>
+  </ion-card>
+</div>

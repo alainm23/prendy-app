@@ -1,0 +1,11 @@
+<div class="item-input">
+  <!-- <ion-label class="ion-padding-start">{{ label }}</ion-label> -->
+  <ion-item (click)="openCurrencyPicker()" lines="none">
+    <ion-label slot="start"><h2>{{ 'Currency' | translate }}</h2></ion-label>
+    <ion-label slot="end"
+      ><h2>
+        {{ currencyData()?.name }} ({{ currencyData()?.code }})
+      </h2></ion-label
+    >
+  </ion-item>
+</div>

@@ -1,0 +1,15 @@
+<ion-item
+  lines="none"
+  ion-long-press
+  (longPressed)="openTemplateMenu($event)"
+  [detail]="true"
+  (click)="selectItem()">
+  <ion-icon
+    slot="start"
+    [style.color]="business.color"
+    [name]="business.icon"
+    class="business-icon"></ion-icon>
+  <ion-label>
+    <h2>{{ business.name }}</h2>
+  </ion-label>
+</ion-item>

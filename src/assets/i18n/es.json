@@ -1,0 +1,20 @@
+{
+  "Business": "Negocios",
+  "Sort": "Ordenar",
+  "Currency": "Moneda",
+  "Select an icon": "Seleccione un icono",
+  "Edit Business": "Editar Negocio",
+  "New Business": "Nuevo Negocio",
+  "Save": "Guardar",
+  "NAME": "NOMBRE",
+  "Appearance": "Apariencia",
+  "OK": "OK",
+  "'Automatic' will match Prendy to the system's Dynamic Type setting.": "'Automático' hará coincidir Prendy con la configuración de Tipo dinámico del sistema.",
+  "Automatic": "Automatico",
+  "Light": "Claro",
+  "Dark": "Oscuro",
+  "Settings": "Ajustes",
+  "Done": "Hecho",
+  "GENERAL": "GENERAL",
+  "Account": "Cuenta"
+}

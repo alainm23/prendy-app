@@ -1,0 +1,27 @@
+<ion-header class="ion-no-border" translucent="true">
+  <ion-toolbar>
+    <ion-title>Select currency</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      (ionInput)="filter($event)"
+    placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-list [inset]="true">
+    <ion-radio-group
+      value="start"
+      [(ngModel)]="currency"
+      (ionChange)="currencySelected($event)">
+      @for (item of items; track trackItems($index, item)) {
+        <ion-item>
+          <ion-radio color="success" [value]="item.code" justify="space-between"
+            >{{ item.code }}&nbsp;&nbsp;&nbsp;{{ item.name }}</ion-radio
+            >
+          </ion-item>
+        }
+      </ion-radio-group>
+    </ion-list>
+  </ion-content>
+  

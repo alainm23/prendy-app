@@ -1,0 +1,42 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title> {{ 'Settings' | translate }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()"> {{ 'Done' | translate }} </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+  <div class="group-list">
+    <ion-label class="group-header">{{ 'GENERAL' | translate }}</ion-label>
+    <ion-list [inset]="true">
+      <ion-item (click)="goAccountView()" detail="true">
+        <ion-icon size="large" slot="start" name="cloud"></ion-icon>
+        <ion-label>
+          <h2>{{ 'Account' | translate }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item (click)="goAppearanceView()" detail="true">
+        <ion-icon size="large" slot="start" name="color-swatch"></ion-icon>
+        <ion-label>
+          <h2>{{ 'Appearance' | translate }}</h2>
+          @if (settings().appearance === 'system') {
+            <p>
+              {{ 'Automatic' | translate }}
+            </p>
+          }
+          @if (settings().appearance === 'light') {
+            <p>
+              {{ 'Light' | translate }}
+            </p>
+          }
+          @if (settings().appearance === 'dark') {
+            <p>
+              {{ 'Dark' | translate }}
+            </p>
+          }
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

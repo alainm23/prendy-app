@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="toolbar-horizontal">
+    <ion-buttons slot="start">
+      <ion-button (click)="openSettingsModal()">
+        <ion-icon slot="icon-only" name="cog"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title> {{ 'Business' | translate }} </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openSortModal()" size="large">
+        {{ 'Sort' | translate }}
+      </ion-button>
+      <ion-button (click)="openNewBusinessModal()">
+        <ion-icon slot="icon-only" name="plus"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense" class="header-horizontal">
+    <ion-toolbar>
+      <ion-title size="large">{{ 'Business' | translate }}</ion-title>
+    </ion-toolbar>
+
+    <ion-searchbar placeholder="Search"></ion-searchbar>
+  </ion-header>
+
+  <ion-grid class="ion-padding-horizontal">
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          @for (item of business; track item.id) {
+          <app-business-item [business]="item" (selected)="goView($event)">
+          </app-business-item>
+          }
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar> </ion-toolbar>
+</ion-footer>

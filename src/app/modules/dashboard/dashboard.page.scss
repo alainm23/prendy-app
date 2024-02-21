@@ -1,0 +1,17 @@
+ion-header,
+ion-toolbar,
+ion-content,
+ion-list {
+  background: var(--ion-content-bg-color);
+  --background: var(--ion-content-bg-color);
+}
+
+.header-horizontal {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.toolbar-horizontal {
+  --padding-start: 9px;
+  --padding-end: 9px;
+}

@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title> {{ 'Sort' | translate }} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()"> {{ 'Done' | translate }} </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list [inset]="true">
+    <ion-reorder-group
+      [disabled]="false"
+      (ionItemReorder)="handleReorder($any($event))">
+      @for (item of items; track trackItems($index, item)) {
+        <ion-item>
+          <ion-icon slot="start" [name]="item.icon"></ion-icon>
+          <ion-label> {{ item.name }} </ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      }
+    </ion-reorder-group>
+  </ion-list>
+</ion-content>

@@ -7,9 +7,9 @@
     </ion-buttons>
     <ion-title>
       @if (isEdit) {
-      {{ 'Edit Business' | translate }}
-      } @if (!isEdit) {
-      {{ 'New Business' | translate }}
+        {{ 'Edit Business' | translate }}
+      } @else {
+        {{ 'New Business' | translate }}
       }
     </ion-title>
     <ion-buttons slot="end">
@@ -23,11 +23,11 @@
     <ion-toolbar>
       <ion-title size="large">
         @if (isEdit) {
-        {{ 'Edit Business' | translate }}
-        } @if (!isEdit) {
-        {{ 'New Business' | translate }}
-        }</ion-title
-      >
+          {{ 'Edit Business' | translate }}
+        } @else {
+          {{ 'New Business' | translate }}
+        }
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 

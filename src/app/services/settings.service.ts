@@ -1,14 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Store } from '@ngxs/store';
-import {
-  LoadSettings,
-  SetAppearance,
-  SetLang,
-} from '../states/settings/settings.actions';
 import { Preferences } from '@capacitor/preferences';
-import { Observable } from 'rxjs';
-import { SettingsStateModel } from '../states/settings/settings.model';
-import { AppearanceType } from '../core/interfaces/settings.model';
+import { BehaviorSubject } from 'rxjs';
+import {
+  AppearanceType,
+  SettingsModel,
+} from '../core/interfaces/settings.model';
 import { TranslateService } from '@ngx-translate/core';
 import { languages } from '../core/constants/default.constants';
 
@@ -16,10 +12,18 @@ import { languages } from '../core/constants/default.constants';
   providedIn: 'root',
 })
 export class SettingsService {
-  private _store: Store = inject(Store);
   private _translateService: TranslateService = inject(TranslateService);
 
   private systemDark: boolean = false;
+
+  private defaultSettings: SettingsModel = {
+    lang: 'es',
+    appearance: 'system',
+  };
+
+  private _settings: BehaviorSubject<SettingsModel> = new BehaviorSubject(
+    this.defaultSettings as SettingsModel
+  );
 
   constructor() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -32,12 +36,43 @@ export class SettingsService {
     });
   }
 
-  loadSettings() {
-    this._store.dispatch(new LoadSettings());
+  async loadSettings() {
+    const langResult = await Preferences.get({ key: 'lang' });
+    const appearanceResult = await Preferences.get({ key: 'appearance' });
+
+    this.setAppLang(langResult.value || this.getDefaultLang());
+    this.toggleDarkTheme(appearanceResult.value as AppearanceType);
+
+    this.setSettings({
+      lang: langResult.value || this.getDefaultLang(),
+      appearance: appearanceResult.value as AppearanceType,
+    });
   }
 
-  setLang(lang: string) {
-    this._store.dispatch(new SetLang(lang));
+  setAppLang(lang: string) {
+    this._translateService.use(lang);
+  }
+
+  setSettings(settings: SettingsModel) {
+    this._settings.next(settings);
+  }
+
+  get settings() {
+    return this._settings.asObservable();
+  }
+
+  async setLang(lang: string) {
+    await Preferences.set({
+      key: 'lang',
+      value: lang,
+    });
+
+    this.setAppLang(lang);
+
+    this.setSettings({
+      ...this._settings.getValue(),
+      lang: lang,
+    });
   }
 
   getDefaultLang() {
@@ -49,17 +84,23 @@ export class SettingsService {
     return 'en';
   }
 
-  setAppearance(lang: AppearanceType) {
-    this._store.dispatch(new SetAppearance(lang));
+  async setAppearance(lang: AppearanceType) {
+    await Preferences.set({
+      key: 'appearance',
+      value: lang,
+    });
+
+    await this.toggleSystemTheme();
+
+    this.setSettings({
+      ...this._settings.getValue(),
+      appearance: lang,
+    });
   }
 
   async getAsyncAppearance() {
     const appearanceResult = await Preferences.get({ key: 'appearance' });
     return appearanceResult.value as AppearanceType;
-  }
-
-  getSettings(): Observable<SettingsStateModel> {
-    return this._store.select(state => state.settings);
   }
 
   toggleDarkTheme(appearance: AppearanceType) {

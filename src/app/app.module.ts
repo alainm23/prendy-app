@@ -18,7 +18,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SettingsService } from './services/settings.service';
-import { StoreModule } from './states/store.module';
+import { SignalsProvider } from './services/signals.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +30,6 @@ import { StoreModule } from './states/store.module';
     AppRoutingModule,
     HttpClientModule,
     NgxIndexedDBModule.forRoot(dbConfig),
-    StoreModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -45,6 +44,7 @@ import { StoreModule } from './states/store.module';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SettingsService,
+    SignalsProvider,
   ],
   bootstrap: [AppComponent],
 })

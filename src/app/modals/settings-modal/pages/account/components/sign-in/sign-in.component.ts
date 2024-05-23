@@ -11,10 +11,8 @@ import { AlertController, IonicModule, ModalController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { InputComponent } from 'src/app/shared/components/input/input.component';
-import { Observable, filter, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { Select } from '@ngxs/store';
-import { AuthState } from 'src/app/states/auth/auth.state';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { SyncTypePickerComponent } from '../../modals/sync-type-picker/sync-type-picker.component';
 import { SyncService } from 'src/app/services/sync.service';
@@ -43,8 +41,6 @@ export class SignInComponent extends BaseComponent implements OnInit {
 
   form!: FormGroup;
   loading = signal<boolean>(false);
-
-  @Select(AuthState.isAuthenticated) authenticated$!: Observable<boolean>;
 
   constructor() {
     super();
@@ -78,17 +74,16 @@ export class SignInComponent extends BaseComponent implements OnInit {
         return;
       }
 
-      this._authService.loginSuccess({
-        user: data.user,
-        token: data.accessToken,
-      });
-
       const commands = await this._syncService.generateCommands();
 
       this._syncService
         .firstSync(sync_type, data.accessToken, commands)
         .subscribe({
-          next: () => {},
+          next: (response: SyncModel) => {
+            console.log('response', response);
+            console.log('data', data);
+            this._syncService.runSyncData(data.accessToken, response);
+          },
         });
     } catch (error) {
       this.loading.set(false);

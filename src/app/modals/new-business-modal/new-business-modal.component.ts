@@ -13,11 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  ActionSheetController,
-  IonicModule,
-  ModalController,
-} from '@ionic/angular';
+import { ActionSheetController, IonicModule } from '@ionic/angular';
 import { DatabaseService } from 'src/app/services/database/database.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { BaseModalComponent } from 'src/app/core/components/base-modal.component';
@@ -56,8 +52,6 @@ export class NewBusinessModalComponent
   private actionSheetCtrl: ActionSheetController = inject(
     ActionSheetController
   );
-  private _databaseService: DatabaseService = inject(DatabaseService);
-  private _authService: AuthService = inject(AuthService);
   private _syncService: SyncService = inject(SyncService);
 
   form!: FormGroup;
@@ -97,25 +91,17 @@ export class NewBusinessModalComponent
     this.business.color = _formValue.color;
     this.business.currency = _formValue.currency;
 
-    if (this.isEdit) {
-      this._syncService
-        .updateItem(this.business)
-        .then(() => {
-          this.closeModal();
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    } else {
-      this._syncService
-        .addItem(this.business)
-        .then(() => {
-          this.closeModal();
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
+    const action = this.isEdit
+      ? this._syncService.updateItem(this.business)
+      : this._syncService.addItem(this.business);
+
+    action
+      .then(() => {
+        this.closeModal();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   }
 
   override async closeModal(confirm: boolean = false) {

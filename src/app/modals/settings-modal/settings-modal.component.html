@@ -24,13 +24,11 @@
             <p>
               {{ 'Automatic' | translate }}
             </p>
-          }
-          @if (settings().appearance === 'light') {
+          }@else if (settings().appearance === 'light') {
             <p>
               {{ 'Light' | translate }}
             </p>
-          }
-          @if (settings().appearance === 'dark') {
+          }@else if (settings().appearance === 'dark') {
             <p>
               {{ 'Dark' | translate }}
             </p>

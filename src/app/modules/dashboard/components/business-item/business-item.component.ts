@@ -12,7 +12,7 @@ import { DatabaseService } from 'src/app/services/database/database.service';
 import { PopoverMenuItemInterface } from 'src/app/shared/components/popover-menu/interfaces/popover-menu-item.interface';
 import { PopoverMenuComponent } from 'src/app/shared/components/popover-menu/popover-menu.component';
 import { LongPressDirective } from 'src/app/shared/directives/long-press.directive';
-import { NewBusinessModalComponent } from 'src/app/modules/new-business-modal/new-business-modal.component';
+import { NewBusinessModalComponent } from 'src/app/modals/new-business-modal/new-business-modal.component';
 import { Business } from 'src/app/core/objects/business.object';
 import { SyncService } from 'src/app/services/sync.service';
 

@@ -55,9 +55,8 @@ export class SyncService {
         }
       )
       .pipe(
-        map(async (response: any) => {
+        map((response: any) => {
           if (response.status) {
-            await this.runSyncData(response.data);
             return response.data;
           } else {
             throw new Error(response.message);
@@ -66,17 +65,15 @@ export class SyncService {
       );
   }
 
-  async runSyncData(sync_data: SyncModel) {
-    this._authService.setSyncToken(sync_data.sync_token);
+  async runSyncData(token: string, sync_data: SyncModel) {
+    this._authService.setAuthData(token, sync_data.sync_token);
     this._authService.updateUserData(sync_data.user);
 
-    this._databaseService.clearCollections().subscribe({
-      next: () => {
-        const businesses = sync_data.businesses;
-        businesses.forEach((data: Record<string, any>) => {
-          this._databaseService.insertBusiness(Business.fromJSON(data));
-        });
-      },
+    this._databaseService.clearCollections().then(() => {
+      const businesses = sync_data.businesses;
+      businesses.forEach((data: Record<string, any>) => {
+        this._databaseService.insertBusiness(Business.fromJSON(data));
+      });
     });
   }
 
@@ -101,13 +98,9 @@ export class SyncService {
    *
    */
 
-  async addItem(object: BaseObject): Promise<any> {
-    object.id = uuidv4();
-    return this.addLocal(object).then(() => {
-      if (this._authService.isAuthenticated) {
-        this.add(object);
-      }
-    });
+  addItem(object: BaseObject): Promise<BaseObject> {
+    object.id = this._databaseService.generateID;
+    return this.addItemLocal(object);
   }
 
   add(object: BaseObject): Promise<BaseObject> {
@@ -144,15 +137,17 @@ export class SyncService {
     });
   }
 
-  addLocal(object: BaseObject): Promise<Business> {
-    return new Promise((resolve, reject) => {
-      if (object.objectType === ObjectType.BUSINESS) {
-        this._databaseService
-          .insertBusiness(object as Business)
-          .then(() => resolve(object as Business))
-          .catch((error: any) => reject(error));
-      }
-    });
+  addItemLocal(object: BaseObject): Promise<BaseObject> {
+    const action: any = {
+      [ObjectType.BUSINESS]: () =>
+        this._databaseService.insertBusiness(object as Business),
+    };
+
+    if (action[object.objectType]) {
+      return action[object.objectType]();
+    }
+
+    return Promise.reject(null);
   }
 
   /*
@@ -164,7 +159,7 @@ export class SyncService {
     if (this._authService.isAuthenticated) {
       return this.update(object);
     } else {
-      return this.deleteLocal(object);
+      return this.updateLocal(object);
     }
   }
 

@@ -1,32 +1,53 @@
 import { Injectable, inject } from '@angular/core';
-import { Store } from '@ngxs/store';
-import {
-  CheckSession,
-  LoginSuccess,
-  Logout,
-  SetSyncToken,
-  UpdateUserData,
-} from '../states/auth/auth.actions';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { AuthState } from '../states/auth/auth.state';
 import { UserModel } from '../core/interfaces/user.model';
+import { AuthInterface } from '../core/interfaces/auth.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _store: Store = inject(Store);
   private _httpClient: HttpClient = inject(HttpClient);
+  private _apiService: ApiService = inject(ApiService);
+
   private _api: string = environment.api;
+
+  private defaultUser: UserModel = {
+    email: '',
+    userId: '',
+  };
+
+  private defaultAuthState: AuthInterface = {
+    token: '',
+    sync_token: '',
+  };
+
+  private _authState: BehaviorSubject<AuthInterface> =
+    new BehaviorSubject<AuthInterface>(this.defaultAuthState);
+
+  private _user: BehaviorSubject<UserModel> = new BehaviorSubject<UserModel>(
+    this.defaultUser
+  );
 
   constructor() {}
 
+  setUser(value: UserModel) {
+    this._user.next(value);
+  }
+
+  get user(): Observable<UserModel> {
+    return this._user.asObservable();
+  }
+
   get isAuthenticated() {
-    const isAuthenticated = this._store.selectSnapshot(
-      AuthState.isAuthenticated
-    );
-    return isAuthenticated;
+    return !!this._authState.getValue().token;
+  }
+
+  get authState() {
+    return this._authState.asObservable();
   }
 
   login(email: string, password: string) {
@@ -38,33 +59,70 @@ export class AuthService {
   }
 
   logout() {
-    return this._store.dispatch(new Logout());
-  }
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('sync_token');
 
-  loginSuccess(data: any) {
-    return this._store.dispatch(new LoginSuccess(data));
+    this._authState.next(this.defaultAuthState);
+    this._user.next(this.defaultUser);
   }
 
   checkSession() {
-    return this._store.dispatch(new CheckSession());
+    const token = localStorage.getItem('token');
+    const sync_token = localStorage.getItem('sync_token');
+    const user = localStorage.getItem('user');
+
+    if (!token) {
+      return;
+    }
+
+    if (!sync_token) {
+      return;
+    }
+
+    if (!user) {
+      return;
+    }
+
+    this._authState.next({
+      token: token,
+      sync_token: sync_token,
+    });
+
+    this.setUser(JSON.parse(user));
+
+    this.checkCurrentUser().subscribe({
+      next: (user: UserModel) => {
+        this.setUser(user);
+      },
+    });
   }
 
-  setSyncToken(access_token: string) {
-    return this._store.dispatch(new SetSyncToken(access_token));
+  setAuthData(token: string, sync_token: string) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('sync_token', sync_token);
+
+    this._authState.next({
+      token: token,
+      sync_token: sync_token,
+    });
+  }
+
+  setSyncToken(sync_token: string) {
+    localStorage.setItem('sync_token', sync_token);
+
+    this._authState.next({
+      ...this._authState.getValue(),
+      sync_token: sync_token,
+    });
   }
 
   updateUserData(user: UserModel) {
-    return this._store.dispatch(new UpdateUserData(user));
+    localStorage.setItem('user', JSON.stringify(user));
+    this.setUser(user);
   }
 
   checkCurrentUser() {
-    const token = localStorage.getItem('token');
-    const url = `${this._api}api/user/profile`;
-
-    return this._httpClient.get(url, {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      }),
-    });
+    return this._apiService.get(`${this._api}api/user/profile`);
   }
 }

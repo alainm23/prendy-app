@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import {
   FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -23,8 +22,8 @@ import { SettingsService } from 'src/app/services/settings.service';
     IonicModule,
     TranslateModule,
     FormsModule,
-    ReactiveFormsModule
-],
+    ReactiveFormsModule,
+  ],
 })
 export class AppearanceComponent extends BaseModalComponent implements OnInit {
   private _settingsService: SettingsService = inject(SettingsService);

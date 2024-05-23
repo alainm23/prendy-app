@@ -25,4 +25,22 @@ export class ApiService {
       })
     );
   }
+
+  get(url: string, token: boolean = true) {
+    const headers = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }),
+    };
+
+    return this._httpClient.get(url, token ? headers : {}).pipe(
+      map((response: any) => {
+        if (response.status) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }

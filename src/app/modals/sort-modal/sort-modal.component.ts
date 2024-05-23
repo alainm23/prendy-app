@@ -6,6 +6,7 @@ import { first } from 'rxjs';
 import { BaseModalComponent } from 'src/app/core/components/base-modal.component';
 import { Business } from 'src/app/core/objects/business.object';
 import { DatabaseService } from 'src/app/services/database/database.service';
+import { SignalsProvider } from 'src/app/services/signals.service';
 
 @Component({
   selector: 'app-sort-modal',
@@ -16,6 +17,7 @@ import { DatabaseService } from 'src/app/services/database/database.service';
 })
 export class SortModalComponent extends BaseModalComponent implements OnInit {
   private _databaseService: DatabaseService = inject(DatabaseService);
+  private _signalsProvider: SignalsProvider = inject(SignalsProvider);
 
   items: Business[] = [];
 
@@ -24,23 +26,21 @@ export class SortModalComponent extends BaseModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._subcriptions['business'] = this._databaseService
-      .getAllBusiness()
+    this._subcriptions['business'] = this._databaseService.business
       .pipe(first())
-      .subscribe((value: any[]) => {
-        this.items = [...value];
+      .subscribe((value: Business[]) => {
+        this.items = value.sort((item1: Business, item2: Business) => {
+          return item1.order - item2.order;
+        });
       });
   }
 
   handleReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     this.items = ev.detail.complete(this.items);
 
-    const items = this.items.map((value: Business, index: number) => {
-      return { ...value, order: index };
-    });
-
-    items.forEach((item: Record<string, any>) => {
-      this._databaseService.updateBusiness(Business.fromJSON(item));
+    this.items.forEach((value: Business, index: number) => {
+      value.order = index;
+      this._databaseService.updateBusiness(value);
     });
   }
 }

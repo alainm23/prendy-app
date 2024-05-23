@@ -9,7 +9,7 @@
     <ion-title> {{ 'Business' | translate }} </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="openSortModal()" size="large">
+      <ion-button (click)="openSortModal()">
         {{ 'Sort' | translate }}
       </ion-button>
       <ion-button (click)="openNewBusinessModal()">
@@ -32,9 +32,10 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          @for (item of business; track item.id) {
-          <app-business-item [business]="item" (selected)="goView($event)">
-          </app-business-item>
+          @for (item of business | orderBy : 'order'; track item.id) {
+          <app-business-item
+            [business]="item"
+            (selected)="goView($event)"></app-business-item>
           }
         </ion-list>
       </ion-col>

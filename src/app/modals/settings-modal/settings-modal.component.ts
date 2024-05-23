@@ -11,10 +11,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonNav, IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { SettingsService } from 'src/app/services/settings.service';
-import { SettingsStateModel } from 'src/app/states/settings/settings.model';
 import { BaseModalComponent } from 'src/app/core/components/base-modal.component';
 import { AppearanceComponent } from './pages/appearance/appearance.component';
 import { AccountComponent } from './pages/account/account.component';
+import { SettingsModel } from 'src/app/core/interfaces/settings.model';
 
 @Component({
   selector: 'app-settings-modal',
@@ -26,8 +26,8 @@ import { AccountComponent } from './pages/account/account.component';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
-],
+    TranslateModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SettingsModalComponent
@@ -37,7 +37,7 @@ export class SettingsModalComponent
   private _settingsService: SettingsService = inject(SettingsService);
   private _ionNav: IonNav = inject(IonNav);
 
-  settings: WritableSignal<SettingsStateModel> = signal<SettingsStateModel>({
+  settings: WritableSignal<SettingsModel> = signal<SettingsModel>({
     lang: 'en',
     appearance: 'system',
   });
@@ -47,13 +47,11 @@ export class SettingsModalComponent
   }
 
   ngOnInit() {
-    this._subcriptions['settings'] = this._settingsService
-      .getSettings()
-      .subscribe({
-        next: (settings: SettingsStateModel) => {
-          this.settings.set(settings);
-        },
-      });
+    this._subcriptions['settings'] = this._settingsService.settings.subscribe({
+      next: (settings: SettingsModel) => {
+        this.settings.set(settings);
+      },
+    });
   }
 
   goAccountView() {
